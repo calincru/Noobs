@@ -96,9 +96,9 @@ void main(string[] args) {
                 first_time = false;
             else
                 write("\r\b\r\b\r\b\r");
-            writefln("1st bot (%s): %s winrate %s/%s ", bots.bot1,
+            writefln("1st bot (%s): %s winrate %s/%s   ", bots.bot1,
                     winrate(win1_cnt, game_cnt), win1_cnt, game_cnt);
-            writefln("2nd bot (%s): %s winrate %s/%s ", bots.bot2,
+            writefln("2nd bot (%s): %s winrate %s/%s   ", bots.bot2,
                     winrate(win2_cnt, game_cnt), win2_cnt, game_cnt);
             writefln("Error count: %s", err_cnt);
         }
