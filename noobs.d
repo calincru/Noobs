@@ -92,24 +92,32 @@ void main(string[] args) {
                     ++win1_cnt;
             }
             auto win2_cnt = game_cnt - win1_cnt;
-            auto winrate = function string(int win, int total) {
-                if (total == 0)
-                    return "50.00";
-                else
-                    return "%.2f".format(100. * win/total);
-            };
             if (first_time)
                 first_time = false;
             else
-                write("\r\b\r\b\r\b\r\b\r");
-            writefln("1st bot (%s): %s%% winrate (%s/%s) ", bots.bot1,
+                write("\r\b\r\b\r\b\r");
+            writefln("1st bot (%s): %s winrate %s/%s ", bots.bot1,
                     winrate(win1_cnt, game_cnt), win1_cnt, game_cnt);
-            writefln("2nd bot (%s): %s%% winrate (%s/%s) ", bots.bot2,
+            writefln("2nd bot (%s): %s winrate %s/%s ", bots.bot2,
                     winrate(win2_cnt, game_cnt), win2_cnt, game_cnt);
             writefln("Error count: %s", err_cnt);
-            auto binomialCumulative = (real k, real n, real p) => betaIncomplete(n - k, k + 1, 1 - p);
-            auto p = binomialCumulative(min(win1_cnt, win2_cnt), game_cnt, 0.5);
-            writefln("p <= %.12f", p);
         }
     }
+}
+
+string winrate(int win, int total) {
+    auto ci = binomial_ci(win, total, 0.05);
+    if (total == 0)
+        return "50.0 (0.0 - 100.0)";
+    else
+        return "%.1f%% (%.1f - %.1f)".format(100. * win/total, 100. * ci[0], 100. * ci[1]);
+};
+
+auto binomial_ci(double k, double n, double err) {
+    double z = normalDistributionInverse(1-0.5*err);
+    double p = 1.*k/n;
+    double coef = 1/(1+(1/n)*z*z);
+    double center = coef*(p+1/(2*n)*z*z);
+    double offset = coef*z*sqrt(1/n*p*(1-p)+1/(4*n*n)*z*z);
+    return tuple(center-offset, center+offset);
 }
