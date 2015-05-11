@@ -1,4 +1,4 @@
-#!/bin/rdmd
+#!/usr/bin/env rdmd
 import std.stdio, std.file, std.process, std.string, std.conv, std.algorithm,
        std.range, std.exception, std.typecons, std.path, std.random, std.parallelism, std.mathspecial;
 enum usage = `
