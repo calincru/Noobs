@@ -50,7 +50,7 @@ void main(string[] args)
     scope(exit) kill(ngserver.pid);
     if (!canFind(ngserver.stdout.byLine.front, "started on all interfaces"))
         throw new Exception(cast(string) ngserver.stderr.byChunk(4096).front);
-    Thread.sleep(dur!"msecs"(800));
+    Thread.sleep(dur!"msecs"(1500));
     writeln("NGServer started");
 
     int win1_cnt, game_cnt;
